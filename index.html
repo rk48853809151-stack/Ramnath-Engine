@@ -1,5 +1,45 @@
-<body style="background: linear-gradient(45deg, #000, #1a1a1a); color: cyan; text-align: center; font-family: sans-serif; padding-top: 50px;">
-    <h1 style="text-shadow: 0 0 10px cyan;">🚀 RAMNATH ENGINE PRO 🚀</h1>
-    <p style="color: white;">Graphics & Performance Loaded...</p>
-    <button style="padding: 15px 30px; background: cyan; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">START ENGINE</button>
+<body style="margin:0; background:#111; font-family:sans-serif; overflow:hidden; display:flex; flex-direction:column; align-items:center;">
+    <h1 style="color:yellow; margin:10px; text-shadow: 2px 2px #ff0000;">🏎️ RAMNATH RACING PRO 🏎️</h1>
+    
+    <div id="gameArea" style="width:320px; height:400px; background:#333; position:relative; overflow:hidden; border:5px solid #555;">
+        <div id="roadLine" style="width:10px; height:100%; background:white; position:absolute; left:155px; border-left:150px solid transparent; border-right:150px solid transparent;"></div>
+        
+        <div id="player" style="width:45px; height:80px; background:red; position:absolute; bottom:20px; left:135px; border-radius:8px; box-shadow: 0 0 15px red; transition:0.2s;">
+            <div style="width:35px; height:20px; background:skyblue; margin:8px auto; border-radius:3px;"></div>
+        </div>
+    </div>
+
+    <div style="margin-top:30px; position:relative; width:200px; height:200px;">
+        <div id="steeringWheel" style="width:180px; height:180px; border:15px solid #444; border-radius:50%; position:absolute; transition: transform 0.3s; display:flex; align-items:center; justify-content:center;">
+            <div style="width:100%; height:15px; background:#444;"></div>
+            <div style="width:15px; height:100%; background:#444; position:absolute;"></div>
+        </div>
+        
+        <button onclick="steerLeft()" style="position:absolute; left:-60px; top:70px; padding:15px; background:red; color:white; border-radius:50%; border:none; font-weight:bold;">LEFT</button>
+        <button onclick="steerRight()" style="position:absolute; right:-60px; top:70px; padding:15px; background:green; color:white; border-radius:50%; border:none; font-weight:bold;">RIGHT</button>
+    </div>
+
+    <script>
+        var player = document.getElementById('player');
+        var wheel = document.getElementById('steeringWheel');
+        var pos = 135;
+
+        function steerLeft() {
+            if(pos > 20) {
+                pos -= 40;
+                player.style.left = pos + 'px';
+                wheel.style.transform = "rotate(-45deg)";
+                setTimeout(() => { wheel.style.transform = "rotate(0deg)"; }, 300);
+            }
+        }
+
+        function steerRight() {
+            if(pos < 250) {
+                pos += 40;
+                player.style.left = pos + 'px';
+                wheel.style.transform = "rotate(45deg)";
+                setTimeout(() => { wheel.style.transform = "rotate(0deg)"; }, 300);
+            }
+        }
+    </script>
 </body>
