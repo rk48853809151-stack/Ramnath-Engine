@@ -1,62 +1,42 @@
-<body style="margin:0; background:#050505; font-family:sans-serif; color:white; overflow-x:hidden;">
+<body style="margin:0; background:#000; font-family:sans-serif; color:white; overflow:hidden;">
 
-    <div id="gameShop" style="padding:30px; text-align:center;">
-        <h1 style="color:cyan; text-shadow: 0 0 20px cyan;">🛒 RAMNATH PREMIUM GAME SHOP</h1>
-        <hr style="border:1px solid #333;">
-
-        <div style="display:flex; justify-content:center; gap:20px; margin-top:30px; flex-wrap:wrap;">
-            
-            <div style="width:280px; background:#111; padding:20px; border:2px solid #333; border-radius:15px;">
-                <h2 style="color:yellow;">1000+ मैदान</h2>
-                <p>यहाँ से अपना पसंदीदा असली मैदान चुनें</p>
-                <select id="mapChoice" style="width:100%; padding:10px; background:#222; color:white; border:1px solid cyan;">
-                    <option value="Forest">असली हरियाली वाला मैदान</option>
-                    <option value="Desert">असली रेतीला मैदान</option>
-                    <option value="Night">रात वाला शहर</option>
-                </select>
-            </div>
-
-            <div style="width:280px; background:#111; padding:20px; border:2px solid #333; border-radius:15px;">
-                <h2 style="color:yellow;">असली गाड़ियाँ</h2>
-                <div id="preview" style="height:100px; border:1px dashed #444; margin-bottom:10px; display:flex; align-items:center; justify-content:center;">
-                    <span id="carLabel" style="color:#666;">खाली जगह</span>
-                </div>
-                <button onclick="loadCar()" style="width:100%; padding:10px; background:cyan; color:black; font-weight:bold; border:none; cursor:pointer;">गाड़ी चुनें</button>
-            </div>
-
+    <div id="app-interface" style="width:100%; height:100vh; display:flex; flex-direction:column;">
+        
+        <div style="background:#1a1a1a; padding:15px; border-bottom:2px solid cyan; display:flex; gap:10px;">
+            <input type="text" id="searchBar" placeholder="मैदान या गाड़ी सर्च करें..." style="flex:1; padding:12px; border-radius:5px; border:none; background:#333; color:white;">
+            <button onclick="runSearch()" style="padding:10px 20px; background:cyan; border:none; border-radius:5px; font-weight:bold;">खोजें</button>
         </div>
 
-        <button onclick="enterWorld()" style="margin-top:50px; padding:20px 80px; font-size:25px; background:red; color:white; border:none; border-radius:50px; cursor:pointer; box-shadow: 0 0 30px red; font-weight:bold;">मैदान में उतरें 🚀</button>
-    </div>
-
-    <div id="gameWorld" style="display:none; width:100%; height:100vh; position:relative;">
-        <div id="mapInfo" style="position:absolute; top:20px; left:20px; color:cyan; font-size:20px; z-index:10;"></div>
-        <div id="realCar" style="width:60px; height:100px; background:white; position:absolute; bottom:50px; left:50%; transform:translateX(-50%); border-radius:8px; box-shadow: 0 0 50px white;">
-            <div style="width:50px; height:25px; background:skyblue; margin:10px auto; border-radius:4px;"></div>
+        <div id="shopFloor" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-wrap:wrap; gap:20px; justify-content:center; align-content:flex-start;">
+            <p id="hint">सर्च बॉक्स में 'मैदान' या 'गाड़ी' लिखें...</p>
         </div>
-        <button onclick="backToShop()" style="position:absolute; top:10px; right:10px; padding:10px;">दुकान वापस जाएँ</button>
     </div>
 
     <script>
-        function loadCar() {
-            document.getElementById('carLabel').innerHTML = "<div style='width:40px; height:70px; background:white; border-radius:5px;'></div><br>कार लोड हो गई!";
-            document.getElementById('carLabel').style.color = "cyan";
-            alert("दुकान से असली सफ़ेद कार चुन ली गई है!");
-        }
+        function runSearch() {
+            const query = document.getElementById('searchBar').value;
+            const floor = document.getElementById('shopFloor');
+            floor.innerHTML = ""; // पुराना हटाओ
 
-        function enterWorld() {
-            const map = document.getElementById('mapChoice').value;
-            document.getElementById('gameShop').style.display = "none";
-            document.getElementById('gameWorld').style.display = "block";
-            
-            let color = (map == "Forest") ? "#1b5e20" : (map == "Desert") ? "#e67e22" : "#1a1a1a";
-            document.getElementById('gameWorld').style.background = color;
-            document.getElementById('mapInfo').innerHTML = "चुना हुआ मैदान: " + map;
-        }
-
-        function backToShop() {
-            document.getElementById('gameShop').style.display = "block";
-            document.getElementById('gameWorld').style.display = "none";
+            if(query.includes("मैदान")) {
+                for(let i=1; i<=6; i++) {
+                    floor.innerHTML += `
+                        <div onclick="alert('मैदान लोड हो रहा है...')" style="width:140px; height:180px; background:#222; border-radius:10px; border:1px solid #444; text-align:center;">
+                            <img src="https://img.icons8.com/color/96/mountain.png" style="width:80%; margin-top:10px;">
+                            <p>असली मैदान ${i}</p>
+                            <button style="background:green; color:white; border:none; padding:5px;">चुनें</button>
+                        </div>`;
+                }
+            } else if(query.includes("गाड़ी")) {
+                floor.innerHTML = `
+                    <div onclick="alert('खाली गाड़ी तैयार है')" style="width:140px; height:180px; background:#222; border-radius:10px; border:1px solid #444; text-align:center;">
+                        <img src="https://img.icons8.com/color/96/car.png" style="width:80%; margin-top:10px;">
+                        <p>खाली गाड़ी</p>
+                        <button style="background:cyan; color:black; border:none; padding:5px;">चुनें</button>
+                    </div>`;
+            } else {
+                floor.innerHTML = "<p>कुछ नहीं मिला। 'मैदान' या 'गाड़ी' लिख कर देखें।</p>";
+            }
         }
     </script>
 </body>
